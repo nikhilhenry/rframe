@@ -15,7 +15,7 @@ pub mod frame {
         pub fn build(name: String) -> Result<Bezel, &'static str> {
             let frame = match name.as_str() {
                 "iPhone13" => Asset::get("iphone13.png").unwrap(),
-                _ => return Err("Phone bezel not supported"),
+                _ => return Err("Device bezel not supported"),
             };
             let frame = image::load_from_memory(&frame.data).unwrap();
             Ok(Bezel { name, frame })
