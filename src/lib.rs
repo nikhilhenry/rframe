@@ -1,3 +1,4 @@
+use std::env;
 use std::error::Error;
 mod rframe;
 use rframe::frame;
@@ -5,6 +6,8 @@ mod utils;
 pub struct Config {
     pub file_path: String,
     pub output_path: String,
+    pub frames_dir: String,
+    pub frame_name: String,
 }
 
 impl Config {
@@ -19,16 +22,26 @@ impl Config {
             Some(path) => utils::process_path(path),
             None => return Err("Output path not provided"),
         };
+        let frames_dir = match args.next() {
+            Some(frames_dir) => frames_dir,
+            None => env::var("FRAMES_DIR").unwrap(),
+        };
+        let frame_name = match args.next() {
+            Some(frames_name) => frames_name,
+            None => String::from("iphone13.png"),
+        };
         Ok(Config {
             file_path,
             output_path,
+            frames_dir,
+            frame_name,
         })
     }
 }
 
 pub fn run(config: Config) -> Result<(), Box<dyn Error>> {
     let screenshot = image::open(config.file_path)?;
-    let bezel = frame::Bezel::build(String::from("iPhone13"))?;
+    let bezel = frame::Bezel::build(format!("{}/{}", config.frames_dir, config.frame_name))?;
     let img = frame::render(screenshot, bezel.frame)?;
     img.save(config.output_path)?;
     return Ok(());

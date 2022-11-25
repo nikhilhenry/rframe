@@ -7,18 +7,13 @@ pub mod frame {
     struct Asset;
 
     pub struct Bezel {
-        pub name: String,
         pub frame: image::DynamicImage,
     }
 
     impl Bezel {
-        pub fn build(name: String) -> Result<Bezel, &'static str> {
-            let frame = match name.as_str() {
-                "iPhone13" => Asset::get("iphone13.png").unwrap(),
-                _ => return Err("Device bezel not supported"),
-            };
-            let frame = image::load_from_memory(&frame.data).unwrap();
-            Ok(Bezel { name, frame })
+        pub fn build(frame_path: String) -> Result<Bezel, Box<dyn Error>> {
+            let frame = image::open(frame_path)?;
+            Ok(Bezel { frame })
         }
     }
 
