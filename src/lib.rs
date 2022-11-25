@@ -22,10 +22,20 @@ impl Config {
             Some(path) => utils::process_path(path),
             None => return Err("Output path not provided"),
         };
-        let frames_dir = match args.next() {
-            Some(frames_dir) => frames_dir,
-            None => env::var("FRAMES_DIR").unwrap(),
-        };
+
+        let frames_dir;
+        if let Some(..) = args.next() {
+            frames_dir = match args.next() {
+                Some(val) => val,
+                None => return Err("Frames directory not provided"),
+            };
+        } else {
+            frames_dir = match env::var("FRAMES_DIR") {
+                Ok(val) => val,
+                Err(..) => return Err("Frames directory not set in env"),
+            }
+        }
+
         let frame_name = match args.next() {
             Some(frames_name) => frames_name,
             None => String::from("iphone13.png"),
