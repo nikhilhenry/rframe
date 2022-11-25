@@ -5,7 +5,7 @@ fn criterion_benchmark(c: &mut Criterion) {
         b.iter(|| {
             rframe::run(Config {
                 file_path: String::from("screen.png"),
-                output_path: String::from("output.png"),
+                output_path: String::from("."),
             })
         })
     });
