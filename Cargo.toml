@@ -8,3 +8,10 @@ edition = "2021"
 [dependencies]
 rust-embed="6.4.2"
 image = "0.24.5"
+
+[dev-dependencies]
+criterion = "0.3"
+
+[[bench]]
+name = "img_render_benchmark"
+harness = false
