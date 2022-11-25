@@ -1,6 +1,7 @@
 use std::error::Error;
 mod rframe;
 use rframe::frame;
+mod utils;
 pub struct Config {
     pub file_path: String,
     pub output_path: String,
@@ -15,7 +16,7 @@ impl Config {
             None => return Err("Image path not provided"),
         };
         let output_path = match args.next() {
-            Some(path) => path,
+            Some(path) => utils::process_path(path),
             None => return Err("Output path not provided"),
         };
         Ok(Config {
@@ -41,7 +42,7 @@ pub fn run(config: Config) -> Result<(), Box<dyn Error>> {
         Ok(img) => img,
         Err(e) => return Err(e),
     };
-    if let Err(e) = img.save("output.png") {
+    if let Err(e) = img.save(config.output_path) {
         return Err(Box::new(e));
     }
     return Ok(());
