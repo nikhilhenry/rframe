@@ -24,11 +24,17 @@ impl Config {
         };
 
         let frames_dir;
-        if let Some(..) = args.next() {
-            frames_dir = match args.next() {
-                Some(val) => val,
+        if let Some(arg) = args.next() {
+            frames_dir = match arg.split_once("=") {
+                Some((flag, val)) => {
+                    if flag.contains("-dir") {
+                        String::from(val)
+                    } else {
+                        return Err("Incorrect flag passed. Must pass --dir=[dir name]");
+                    }
+                }
                 None => return Err("Frames directory not provided"),
-            };
+            }
         } else {
             frames_dir = match env::var("FRAMES_DIR") {
                 Ok(val) => val,
