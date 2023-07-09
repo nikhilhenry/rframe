@@ -1,11 +1,6 @@
 pub mod frame {
     use image::DynamicImage;
-    use rust_embed::RustEmbed;
     use std::error::Error;
-    #[derive(RustEmbed)]
-    #[folder = "assets"]
-    struct Asset;
-
     pub struct Bezel {
         pub frame: image::DynamicImage,
     }
