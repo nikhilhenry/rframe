@@ -6,6 +6,8 @@ fn criterion_benchmark(c: &mut Criterion) {
             rframe::run(Config {
                 file_path: String::from("screen.png"),
                 output_path: String::from("."),
+                frames_dir: String::from("assets"),
+                frame_name: String::from("iphone14"),
             })
         })
     });
